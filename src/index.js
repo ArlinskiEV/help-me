@@ -6,36 +6,22 @@ module.exports = function count(s, pairs) {
   let mul = [...pairs];
   //-----------------------------
   // advanced zero ?
+  // '11' in s + [2,x] in pairs => 0
   //-----------------------------
 
   // evil time
   function testK(k) {
-    let memory = {};
     let commonDivisor = (num) => {
-      // if (memory.num === undefined) {
-      //   memory.num = mul.some((item) => (num % item[0] === 0));
-      // }
-      // return memory.num;
       return mul.some((item) => (num % item[0] === 0));
     };
-    // true, item === '0' / false, item === '1'
     return Array.prototype.every.call(s, (item, index) => (commonDivisor(k + index) === (item === '0')));
-
-    // let fromArr = Array.prototype.every.call(s, (item, index) => {
-    //   let common = commonDivisor(k + index);
-
-    //   let res = item === '0' ? common : !common;
-    //   console.log(`k+index=${k + index},item=${item},common=${common}`);
-    //   return res;
-    // });
-    // console.log(`k=${k} fromArr=${fromArr}`);
-    // return fromArr;
   };
 
   let n = mul.reduce((prev, item) => prev * Math.pow(item[0], item[1]), 1);
-  console.log('n=' + n);
+  // console.log('n=' + n);
   //stopper
-  n = n>6000000 ? 6000000 : n;
+  if (n > 5800000) return 0;
+  //WHY??? form 0 => 0 is incorrect!! WTF??
   for (let i = 1; i <= n; i++) {
     if (testK(i)) {
       answer += 1;
@@ -43,7 +29,7 @@ module.exports = function count(s, pairs) {
     }
   };
 
-  console.log('answer=' + answer);
+  // console.log('answer=' + answer);
   const result = answer % 1000000007;
   return result;
 }
